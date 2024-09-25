@@ -2,9 +2,18 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
 
+The frontend (either a web or a mobile app) should be implemented with the latest stable version of the frontend technology specified by your job application. The frontend should be based on modern UI/UX principles and methodologies.
+
+Users of the website should be able to create an account and login with a previously created account.
+
+Once logged in, the user should be able to upload a file that will be processed asynchronously by the backend. Once the file has been uploaded, the user can proceed with uploading more files, review the name, status and size of previously uploaded files, or change the name of a previously uploaded file.
+Uploaded files are stored in a database or a distributed file system and a service job should pick up the file from the database / DFS, compress it with ZIP and reinsert it into the database / DFS. 
+
+Once the file has been zipped, the user of the community site can download the file. 
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `npm:start` for a dev server. Navigate to `http://localhost:4200/` or `http://localhost:${APP_PORT:-4300}/` inside Docker. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
