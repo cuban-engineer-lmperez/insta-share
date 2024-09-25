@@ -1,0 +1,21 @@
+services:
+  insta-share-angular:
+    build:
+      context: .
+      target: builder
+    image: insta-share-angular:${APP_VERSION}
+    container_name: insta-share-angular
+    restart: always
+    ports:
+      - ${APP_PORT:-4300}:4200
+    tty: true
+    volumes:
+      - ./:/home/node/app
+      - ./node_modules/:/home/node/app/node_modules/
+    #command: "yarn start:${NODE_ENV}"  
+    networks:
+      - network
+
+networks:
+  network:
+    name: network
