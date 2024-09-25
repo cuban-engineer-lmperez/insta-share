@@ -8,7 +8,7 @@ services:
     container_name: insta-share-angular
     restart: always
     ports:
-      - ${APP_PORT}:4200
+      - ${APP_PORT:-4300}:4200
     tty: true
     volumes:
       - ./:/home/node/app
