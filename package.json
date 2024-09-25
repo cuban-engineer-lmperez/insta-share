@@ -5,10 +5,12 @@
     "ng": "ng",
     "start": "ng serve --host=0.0.0.0 --poll=2000 --watch",
     "build": "ng build",
+    "build:prod": "ng build --c=production",
     "watch": "ng build --watch --configuration develop",
     "test": "ng test",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix --quit"
+    "lint:fix": "ng lint --fix --quit",
+    "firebase:deploy": "ng b --c=production && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
@@ -28,7 +30,7 @@
   "devDependencies": {
     "@angular-builders/jest": "^18.0.0",
     "@angular-devkit/build-angular": "^18.2.5",
-    "@angular/cli": "^18.2.5",
+    "@angular/cli": "^18.2.6",
     "@angular/compiler-cli": "^18.2.0",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.13",

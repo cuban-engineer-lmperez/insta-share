@@ -50,7 +50,11 @@
                   "maximumError": "4kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "outputPath": {
+                "base": "public",
+                "browser": ""
+              }
             },
             "development": {
               "optimization": false,
