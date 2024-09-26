@@ -16,7 +16,7 @@
     
     WORKDIR /home/node/app
     
-    RUN npm install @angular/cli
+    RUN npm install -g @angular/cli
     
     COPY package*.json ./
     
