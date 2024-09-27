@@ -1,0 +1,51 @@
+.container-row-login {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  @media only screen and (max-height: 400px) {
+    height: auto;
+  }
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 3rem;
+  border-radius: .5rem;
+  min-width: 20rem;
+  margin: 1rem 0;
+
+  @media only screen and (max-width: 600px) {
+    min-width: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .link {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+    padding: 0 1rem;
+    width: 100%;
+
+    button {
+      width: 100%;
+    }
+  }
+}
