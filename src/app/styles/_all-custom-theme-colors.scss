@@ -1,0 +1,6 @@
+// CUSTOM COMPONENTS
+@use "./global";
+
+@mixin all-custom-component-theme-colors($theme) {
+  @include global.theme($theme);
+}
