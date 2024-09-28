@@ -9,6 +9,7 @@
     "build:prod": "ng build --c=production",
     "watch": "ng build --watch --configuration develop",
     "test": "ng test",
+    "test:cov": "ng test --no-watch --coverage",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix --quit",
     "firebase:deploy": "ng b --c=production && firebase deploy --only hosting"
