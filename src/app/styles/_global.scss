@@ -7,11 +7,14 @@
     text-decoration: none;
     text-transform: none;
   }
+
+  .error-message {
+    color: mat.get-theme-color($theme, error);
+    font-size: small
+  }
 }
 
-@mixin typography($theme) {
-
-}
+@mixin typography($theme) {}
 
 @mixin theme($theme) {
   @if mat.theme-has($theme, color) {
