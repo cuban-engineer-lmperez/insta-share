@@ -15,14 +15,14 @@
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
-                <a [routerLink]="[ '/' ]" class="link">Forgot password?</a>
-
+                <a [routerLink]="[ '/' ]" class="link">Forgot password? </a>
+           
                 <section *ngIf="incorrectCredentials===true">
                     <p class="error">Sus credenciales son incorrectas.</p>
                 </section>
             </form>
             <div class="buttons">
-                <button [disabled]="registerForm.invalid" mat-raised-button color="primary" (click)="register()">
+                <button id="registerButton" [disabled]="registerForm.invalid" mat-raised-button color="primary" (click)="register()">
                     Aceptar
                 </button>
             </div>
