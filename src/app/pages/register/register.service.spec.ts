@@ -7,7 +7,8 @@ import {
   signOut,
   sendPasswordResetEmail,
   getIdTokenResult,
-  user, User, UserCredential
+  user, UserCredential,
+  createUserWithEmailAndPassword
 } from '@angular/fire/auth';
 
 jest.mock('@angular/fire/auth', () => {
@@ -15,6 +16,7 @@ jest.mock('@angular/fire/auth', () => {
     Auth: jest.fn(), // Mock the Auth class
     getIdTokenResult: jest.fn(), // Mock the getIdTokenResult function
     sendPasswordResetEmail: jest.fn(), // Mock the sendPasswordResetEmail function
+    createUserWithEmailAndPassword: jest.fn(), // Mock the signInWithEmailAndPassword function
     signInWithEmailAndPassword: jest.fn(), // Mock the signInWithEmailAndPassword function
     signOut: jest.fn(), // Mock the signOut function
     user: jest.fn(() => of(null)), // Mock the user observable, returning a null user by default
@@ -26,6 +28,7 @@ describe('RegisterService', () => {
   let authMock: jest.Mocked<Auth>;
   beforeEach(() => {
     // Mock implementations for the AngularFire functions
+    (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({ operationType: 'signIn', user: { email: 'luismanuelp1992@gmail.com' } } as UserCredential); // Mock the return value
     (signInWithEmailAndPassword as jest.Mock).mockResolvedValue({} as UserCredential); // Mock the return value
     (signOut as jest.Mock).mockResolvedValue(undefined);
     (sendPasswordResetEmail as jest.Mock).mockResolvedValue(undefined);
@@ -51,14 +54,10 @@ describe('RegisterService', () => {
   });
 
   it('should successful register an user with email and password', async () => {
-    const credentials  = { email: 'luismanuelp1992@gmail.com', password: 'Abcd1234*' };
-    await service.createAccount(credentials);
-   // expect(firebase.auth().createUserWithEmailAndPassword).toBeCalledWith(email, password);
-   // service.createAccount(mockUser).subscribe((data) => {
-   //   expect(data.email).toEqual(mockUser.email);
-   // });
-   expect(signInWithEmailAndPassword).toHaveBeenCalledWith(authMock, credentials.email, credentials.password);
-
+    const credentials = { email: 'luismanuelp1992@gmail.com', password: 'Abcd1234*' };
+    const response = await service.singUp(credentials);
+    expect(JSON.stringify(response)).toEqual(JSON.stringify({ operationType: 'signIn', user: { email: credentials.email } }));
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(authMock, credentials.email, credentials.password);
   });
 
 });
