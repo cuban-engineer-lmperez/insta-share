@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { RegisterService } from './register.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +20,8 @@ import { RegisterService } from './register.service';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  private _snackBar = inject(MatSnackBar);
+
   hide = signal(true);
   confirmHide = signal(true);
   registerForm: FormGroup;
@@ -52,7 +56,12 @@ export class RegisterComponent {
    */
   async singUp() {
     if (this.registerForm.valid) {
-      await this.registerService.singUp({ email: this.f['username'].value, password: this.f['password'].value });
+      try {
+        await this.registerService.singUp({ email: this.f['username'].value, password: this.f['password'].value });
+      } catch (e) {
+        const wrapError = e as { message: string };
+        this._snackBar.open(wrapError?.message, 'Close', { duration: environment.snackBarDuration });
+      }
     }
   }
 
