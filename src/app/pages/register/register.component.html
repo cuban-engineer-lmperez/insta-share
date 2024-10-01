@@ -1,0 +1,80 @@
+<section class="container-row-login">
+    <div class="card-content mat-elevation-z8">
+        <h2 class="title">Register</h2>
+        <h4>Create a new CE account</h4>
+        <form [formGroup]="registerForm">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="username" />
+                @if (f['username'].invalid && (f['username'].dirty || f['username'].touched)) {
+                <mat-error>
+                    @if (f['username'].hasError('required')) {
+                    <span>Email is required.</span>
+                    }
+                    @else if (f['username'].hasError('email')) {
+                    <span>Email must be an valid.</span>
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="ng-invalid">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" class="ng-invalid">
+                <button mat-icon-button matSuffix (click)="hide.set(!hide())" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if (f['password'].invalid && (f['password'].dirty || f['password'].touched)) {
+                <mat-error>
+                    @if (f['password'].hasError('required')) {
+                    <span>Password is required.</span>
+                    }@else if (f['password'].hasError('minlength')) {
+                    Password should be at least 6 characters.
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label> Confirm your password </mat-label>
+                <input matInput [type]="confirmHide() ? 'password' : 'text'" formControlName="confirmPassword">
+                <button mat-icon-button matSuffix (click)="confirmHide.set(!confirmHide())"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="confirmHide()">
+                    <mat-icon>{{confirmHide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if (f['confirmPassword'].invalid && (f['confirmPassword'].dirty || f['confirmPassword'].touched)) {
+                <mat-error>
+                    @if (f['confirmPassword'].hasError('required')) {
+                    Confirm password is required.
+                    } @else if (f['confirmPassword'].hasError('minlength')) {
+                    Password should be at least 6 characters.
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+            @if ( registerForm.hasError('passwordNoMatch')) {
+            <p class="error-message">
+                Passwords does not match.
+            </p>
+            }
+            <a [routerLink]="[ '/forgot-password' ]" class="link">Forgot password? </a>
+            @if (!!incorrectCredentials()) {
+            <p class="error">Sus credenciales son incorrectas.</p>
+            }
+            <div class="buttons">
+                <button id="registerButton" [disabled]="registerForm.invalid" mat-flat-button color="primary"
+                    (click)="singUp()">
+                    Aceptar
+                </button>
+            </div>
+            <div class="bottom-items">
+                <a class="center" [routerLink]="[ '/login' ]" class="link">or Sing In </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
