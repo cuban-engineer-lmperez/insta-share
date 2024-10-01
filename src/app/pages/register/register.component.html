@@ -6,7 +6,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="username" autofocus="" />
+                <input matInput formControlName="username" />
                 @if (f['username'].invalid && (f['username'].dirty || f['username'].touched)) {
                 <mat-error>
                     @if (f['username'].hasError('required')) {
