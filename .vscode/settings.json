@@ -19,6 +19,8 @@
     },
     "conventionalCommits.scopes": [
         "docker",
-        "deps"
+        "deps",
+        "cd",
+        "lint"
     ]
 }

@@ -1,0 +1,16 @@
+@use "@angular/material" as mat;
+@use './m3-theme';
+@use "./all-custom-theme-colors" as custom-colors;
+
+@include mat.core();
+
+// Apply the dark theme by default
+html {
+  // Apply the light theme by default
+  @include mat.all-component-themes(m3-theme.$light-theme);
+  @include custom-colors.all-custom-component-theme-colors(m3-theme.$light-theme);
+}
+
+
+// Apply the light theme only when the `.my-light-theme` CSS class is applied
+// to an ancestor element of the components (such as `body`).
