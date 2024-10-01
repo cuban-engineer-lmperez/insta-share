@@ -20,4 +20,20 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return loginForm controls', () => {
+    expect(component.loginForm.controls).toEqual(component.f);
+  });
+
+  it('should call the login method when the Sing In button is clicked', () => {
+    // Spy on the `login` method
+    jest.spyOn(component, 'singIn');
+
+    // Trigger the button click
+    const button = fixture.nativeElement.querySelector('#singInButton');
+    button.dispatchEvent(new Event('click'));
+
+    // Check that the `singIn` method was called
+    expect(component.singIn).toHaveBeenCalled();
+  });
 });
