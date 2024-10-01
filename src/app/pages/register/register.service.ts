@@ -14,9 +14,9 @@ export class RegisterService {
    * @returns UserCredential 
    */
   async singUp(userAuthData: IUserAuthData) {
-    let singUpResponse: UserCredential;
     try {
-      return singUpResponse = await createUserWithEmailAndPassword(this.auth, userAuthData.email, userAuthData.password);
+      const singUpResponse: UserCredential = await createUserWithEmailAndPassword(this.auth, userAuthData.email, userAuthData.password);
+      return singUpResponse;
     } catch (error) {
       const wrapError = error as IFirebaseError;
       const firebaseError: IFirebaseError = { ...wrapError };

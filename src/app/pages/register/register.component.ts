@@ -47,7 +47,7 @@ export class RegisterComponent {
     )
   }
 
-  get f(): { [key: string]: AbstractControl } {
+  get f(): Record<string, AbstractControl> {
     return this.registerForm.controls;
   }
 
@@ -68,23 +68,23 @@ export class RegisterComponent {
   checkMatchingPassword: ValidatorFn = (
     control: AbstractControl,
   ): ValidationErrors | null => {
-    let password = control.get('password');
-    let confirmPassword = control.get('confirmPassword');
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
     const passNotMatch = password && confirmPassword && password.value !== confirmPassword.value;
     let passwordErrors = password?.errors || null;
     let confirmPasswordErrors = password?.errors || null;
-    if (!!passNotMatch) {
+    if (passNotMatch === true) {
       password?.setErrors({ ...passwordErrors, passwordNoMatch: true });
       confirmPassword?.setErrors({ ...confirmPasswordErrors, passwordNoMatch: true });
     } else {
       delete passwordErrors?.['passwordNoMatch'];
-      if (passwordErrors && Object.keys(passwordErrors as Object).length === 0) passwordErrors = null
+      if (passwordErrors && Object.keys(passwordErrors as object).length === 0) passwordErrors = null
       delete confirmPasswordErrors?.['passwordNoMatch'];
-      if (confirmPasswordErrors && Object.keys(confirmPasswordErrors as Object).length === 0) confirmPasswordErrors = null
+      if (confirmPasswordErrors && Object.keys(confirmPasswordErrors as object).length === 0) confirmPasswordErrors = null
       password?.setErrors(passwordErrors);
       confirmPassword?.setErrors(confirmPasswordErrors);
     }
-    return !!passNotMatch ? { passwordNoMatch: true } : null;
+    return passNotMatch === true ? { passwordNoMatch: true } : null;
   };
 
 }
