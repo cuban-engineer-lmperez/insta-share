@@ -25,7 +25,6 @@ export class RegisterComponent {
   hide = signal(true);
   confirmHide = signal(true);
   registerForm: FormGroup;
-  incorrectCredentials = signal(false);
   passwordsDontMatch = signal(false);
 
   constructor(private registerService: RegisterService) {

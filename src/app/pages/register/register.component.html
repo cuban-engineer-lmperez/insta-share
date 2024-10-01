@@ -1,7 +1,12 @@
 <section class="container-row-login">
     <div class="card-content mat-elevation-z8">
-        <h2 class="title">Register</h2>
-        <h4>Create a new CE account</h4>
+        <div class="center-banner">
+            <img width="150"
+                src="https://firebasestorage.googleapis.com/v0/b/insta-share-1c720.appspot.com/o/logo-ce.png?alt=media&token=8d10a091-438c-4b55-a8af-08d44e6cc937"
+                alt="CE Banner" />
+            <h2 class="title">Sing Un</h2>
+            <h4>Create a new CE account</h4>
+        </div>
         <form [formGroup]="registerForm">
 
             <mat-form-field appearance="outline">
@@ -59,18 +64,19 @@
                 Passwords does not match.
             </p>
             }
-            <a [routerLink]="[ '/forgot-password' ]" class="link">Forgot password? </a>
-            @if (!!incorrectCredentials()) {
-            <p class="error">Sus credenciales son incorrectas.</p>
-            }
+            <div class="align-content-end">
+                <a [routerLink]="[ '/forgot-password' ]" class="link">Forgot password? </a>
+            </div>
+
             <div class="buttons">
+                 
                 <button id="registerButton" [disabled]="registerForm.invalid" mat-flat-button color="primary"
                     (click)="singUp()">
-                    Aceptar
+                    Sing Un
                 </button>
             </div>
             <div class="bottom-items">
-                <a class="center" [routerLink]="[ '/login' ]" class="link">or Sing In </a>
+                Already have an account? <a class="center" [routerLink]="[ '/login' ]" class="link"> Sing In </a>
             </div>
 
         </form>
