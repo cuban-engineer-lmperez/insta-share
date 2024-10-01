@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { RegisterService } from './register.service';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,7 @@ export class RegisterComponent {
   incorrectCredentials = signal(false);
   passwordsDontMatch = signal(false);
 
-  constructor() {
+  constructor(private registerService: RegisterService) {
     this.registerForm = new FormGroup({
       username: new FormControl('', {
         updateOn: 'change',
@@ -31,11 +32,11 @@ export class RegisterComponent {
       }),
       password: new FormControl('', {
         updateOn: 'change',
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.minLength(6)]
       }),
       confirmPassword: new FormControl('', {
         updateOn: 'change',
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.minLength(6)]
       }),
     },
       { validators: this.checkMatchingPassword }
@@ -49,9 +50,9 @@ export class RegisterComponent {
   /**
    * Create a new account with the register form data
    */
-  register() {
+  async singUp() {
     if (this.registerForm.valid) {
-      alert('register')
+      await this.registerService.singUp({ email: this.f['username'].value, password: this.f['password'].value });
     }
   }
 
@@ -68,9 +69,9 @@ export class RegisterComponent {
       confirmPassword?.setErrors({ ...confirmPasswordErrors, passwordNoMatch: true });
     } else {
       delete passwordErrors?.['passwordNoMatch'];
-      if(passwordErrors && Object.keys(passwordErrors as Object).length === 0)  passwordErrors = null
+      if (passwordErrors && Object.keys(passwordErrors as Object).length === 0) passwordErrors = null
       delete confirmPasswordErrors?.['passwordNoMatch'];
-      if(confirmPasswordErrors && Object.keys(confirmPasswordErrors as Object).length === 0)  confirmPasswordErrors = null
+      if (confirmPasswordErrors && Object.keys(confirmPasswordErrors as Object).length === 0) confirmPasswordErrors = null
       password?.setErrors(passwordErrors);
       confirmPassword?.setErrors(confirmPasswordErrors);
     }

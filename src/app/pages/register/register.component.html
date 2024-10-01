@@ -30,6 +30,8 @@
                 <mat-error>
                     @if (f['password'].hasError('required')) {
                     <span>Password is required.</span>
+                    }@else if (f['password'].hasError('minlength')) {
+                    Password should be at least 6 characters.
                     }
                 </mat-error>
                 }
@@ -46,6 +48,8 @@
                 <mat-error>
                     @if (f['confirmPassword'].hasError('required')) {
                     Confirm password is required.
+                    } @else if (f['confirmPassword'].hasError('minlength')) {
+                    Password should be at least 6 characters.
                     }
                 </mat-error>
                 }
@@ -61,10 +65,14 @@
             }
             <div class="buttons">
                 <button id="registerButton" [disabled]="registerForm.invalid" mat-flat-button color="primary"
-                    (click)="register()">
+                    (click)="singUp()">
                     Aceptar
                 </button>
             </div>
+            <div class="bottom-items">
+                <a class="center" [routerLink]="[ '/login' ]" class="link">or Sing In </a>
+            </div>
+
         </form>
 
     </div>

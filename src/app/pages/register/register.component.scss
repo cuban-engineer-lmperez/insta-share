@@ -47,4 +47,11 @@
       width: 100%;
     }
   }
+
+  .bottom-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
