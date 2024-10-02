@@ -5,17 +5,18 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { RegisterService } from './register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule,
-    MatButtonModule, RouterModule, MatIconModule],
+    MatButtonModule, RouterModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -25,12 +26,12 @@ export class RegisterComponent {
   hide = signal(true);
   confirmHide = signal(true);
   registerForm: FormGroup;
-  incorrectCredentials = signal(false);
   passwordsDontMatch = signal(false);
+  isLoading = signal(false);
 
-  constructor(private registerService: RegisterService) {
+  constructor(private registerService: RegisterService, private router: Router) {
     this.registerForm = new FormGroup({
-      username: new FormControl('', {
+      email: new FormControl('', {
         updateOn: 'change',
         validators: [Validators.required, Validators.email]
       }),
@@ -55,13 +56,18 @@ export class RegisterComponent {
    * Create a new account with the register form data
    */
   async singUp() {
-    if (this.registerForm.valid) {
+    if (this.isLoading() === false && this.registerForm.valid) {
+      this.isLoading.set(true);
       try {
-        await this.registerService.singUp({ email: this.f['username'].value, password: this.f['password'].value });
+        const user = await this.registerService.singUp({ email: this.f['email'].value, password: this.f['password'].value });
+        console.log(user);
+        this._snackBar.open('User created', 'Close', { duration: environment.snackBarDuration });
+        this.router.navigate(['login']);
       } catch (e) {
         const wrapError = e as { message: string };
         this._snackBar.open(wrapError?.message, 'Close', { duration: environment.snackBarDuration });
       }
+      this.isLoading.set(false);
     }
   }
 

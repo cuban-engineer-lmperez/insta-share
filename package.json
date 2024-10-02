@@ -1,6 +1,6 @@
 {
   "name": "insta-share",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start:dev": "ng serve -o --watch -c development",
@@ -9,9 +9,11 @@
     "build:prod": "ng build --c=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:file": "ng test login-component.spec.ts",
     "test:cov": "ng test --no-watch --coverage --silent",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "ci": "npm lint && npm test:cov",
     "firebase:deploy": "ng b --c=production && firebase deploy --only hosting"
   },
   "private": true,
