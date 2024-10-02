@@ -5,10 +5,10 @@ const config: Config = {
     coverageReporters: ['text'], // text-summary
     coverageThreshold: {
         global: {
-          branches: 0,
+          branches: 85,
           functions: 85,
-          lines: 0,
-          statements: 0,
+          lines: 85,
+          statements: 85,
         },
       },
 };

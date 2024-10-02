@@ -4,14 +4,14 @@
             <img width="150"
                 src="https://firebasestorage.googleapis.com/v0/b/insta-share-1c720.appspot.com/o/logo-ce.png?alt=media&token=8d10a091-438c-4b55-a8af-08d44e6cc937"
                 alt="CE Banner" />
-            <h2 class="title">Sing Un</h2>
-            <h4>Create a new CE account</h4>
+            <h2 class="title">Sing In</h2>
+            <h4>Welcome back!</h4>
         </div>
-        <form [formGroup]="registerForm">
+        <form [formGroup]="loginForm">
 
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email" />
+                <input matInput formControlName="email" type="email"/>
                 @if (f['email'].invalid && (f['email'].dirty || f['email'].touched)) {
                 <mat-error>
                     @if (f['email'].hasError('required')) {
@@ -26,8 +26,7 @@
 
             <mat-form-field appearance="outline" class="ng-invalid">
                 <mat-label>Enter your password</mat-label>
-                <input matInput type="password" [type]="hide() ? 'password' : 'text'" formControlName="password"
-                    class="ng-invalid">
+                <input matInput type="password" [type]="hide() ? 'password' : 'text'" formControlName="password" class="ng-invalid">
                 <button mat-icon-button matSuffix (click)="hide.set(!hide())" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide()">
                     <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -42,43 +41,17 @@
                 </mat-error>
                 }
             </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label> Confirm your password </mat-label>
-                <input matInput type="password" [type]="confirmHide() ? 'password' : 'text'"
-                    formControlName="confirmPassword">
-                <button mat-icon-button matSuffix (click)="confirmHide.set(!confirmHide())"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="confirmHide()">
-                    <mat-icon>{{confirmHide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-                @if (f['confirmPassword'].invalid && (f['confirmPassword'].dirty || f['confirmPassword'].touched)) {
-                <mat-error>
-                    @if (f['confirmPassword'].hasError('required')) {
-                    Confirm password is required.
-                    } @else if (f['confirmPassword'].hasError('minlength')) {
-                    Password should be at least 6 characters.
-                    }
-                </mat-error>
-                }
-            </mat-form-field>
-            @if ( registerForm.hasError('passwordNoMatch')) {
-            <p class="error-message">
-                Passwords does not match.
-            </p>
-            }
             <div class="align-content-end">
                 <a [routerLink]="[ '/forgot-password' ]" class="link">Forgot password? </a>
             </div>
-
             <div class="buttons">
-
-                <button id="registerButton" [disabled]="registerForm.invalid || isLoading() === true" mat-flat-button color="primary"
-                    (click)="singUp()" class="with-icon"> Sing Up
-                    <mat-icon [ngClass]="{'hide':isLoading() === false}"><mat-spinner diameter="18"> </mat-spinner></mat-icon>
+                <button id="singInButton" [disabled]="loginForm.invalid || isLoading() === true" mat-flat-button color="primary"
+                    (click)="singIn()" class="with-icon">
+                    Sing In  <mat-icon [ngClass]="{'hide':isLoading() === false}"><mat-spinner diameter="18"> </mat-spinner></mat-icon>
                 </button>
             </div>
             <div class="bottom-items">
-                Already have an account? <a class="center" [routerLink]="[ '/login' ]" class="link"> Sing In </a>
+                Don't have an account? <a class="center" [routerLink]="[ '/register' ]" class="link"> Sing Up </a>
             </div>
 
         </form>
