@@ -5,7 +5,7 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
@@ -27,9 +27,9 @@ export class LoginComponent {
   loginForm: FormGroup;
   isLoading = signal(false);
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private router: Router) {
     this.loginForm = new FormGroup({
-      username: new FormControl('', {
+      email: new FormControl('', {
         updateOn: 'change',
         validators: [Validators.required, Validators.email]
       }),
@@ -52,7 +52,8 @@ export class LoginComponent {
     if (this.isLoading() === false && this.loginForm.valid) {
       this.isLoading.set(true);
       try {
-        await this.loginService.singIn({ email: this.f['username'].value, password: this.f['password'].value });
+        await this.loginService.singIn({ email: this.f['email'].value, password: this.f['password'].value });
+        this.router.navigate(['dashboard']);
       } catch (e) {
         const wrapError = e as { message: string };
         this._snackBar.open(wrapError?.message, 'Close', { duration: environment.snackBarDuration });

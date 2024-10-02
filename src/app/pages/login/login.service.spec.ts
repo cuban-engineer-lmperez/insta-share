@@ -16,7 +16,7 @@ jest.mock('@angular/fire/auth', () => {
     Auth: jest.fn(), // Mock the Auth class
     getIdTokenResult: jest.fn(), // Mock the getIdTokenResult function
     sendPasswordResetEmail: jest.fn(), // Mock the sendPasswordResetEmail function
-    createUserWithEmailAndPassword: jest.fn(), // Mock the signInWithEmailAndPassword function
+    createUserWithEmailAndPassword: jest.fn(), // Mock the createUserWithEmailAndPassword function
     signInWithEmailAndPassword: jest.fn(), // Mock the signInWithEmailAndPassword function
     signOut: jest.fn(), // Mock the signOut function
     user: jest.fn(() => of(null)), // Mock the user observable, returning a null user by default
@@ -25,11 +25,12 @@ jest.mock('@angular/fire/auth', () => {
 
 describe('LoginService', () => {
   let service: LoginService;
-  let authMock: jest.Mocked<Auth>;
+  // let auth: jest.Mocked<Auth>;
   beforeEach(() => {
+    // jest.resetModules();
     // Mock implementations for the AngularFire functions
-    (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({ operationType: 'signIn', user: { email: 'luismanuelp1992@gmail.com' } } as UserCredential); // Mock the return value
-    (signInWithEmailAndPassword as jest.Mock).mockResolvedValue({} as UserCredential); // Mock the return value
+    (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({} as UserCredential); // Mock the return value
+    (signInWithEmailAndPassword as jest.Mock).mockResolvedValue({ operationType: 'signIn', user: { email: 'test@test.com' } } as UserCredential);
     (signOut as jest.Mock).mockResolvedValue(undefined);
     (sendPasswordResetEmail as jest.Mock).mockResolvedValue(undefined);
     (getIdTokenResult as jest.Mock).mockResolvedValue({
@@ -39,7 +40,12 @@ describe('LoginService', () => {
     });
     (user as jest.Mock).mockReturnValue(of(null)); // Mock the user observable to return null
 
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        LoginService,
+        { provide: Auth, useValue: {} }, // Provide an empty object as a mock Auth instance
+      ],
+    });
     service = TestBed.inject(LoginService);
   });
 
@@ -48,16 +54,24 @@ describe('LoginService', () => {
   });
 
   it('should successful login an user with email and password', async () => {
-    const credentials = { email: 'luismanuelp1992@gmail.com', password: 'Abcd1234*' };
+    const credentials = { email: 'test@test.com', password: 'Abcd1234*' };
     const response = await service.singIn(credentials);
-    expect(JSON.stringify(response)).toEqual(JSON.stringify({ operationType: 'signIn', user: { email: credentials.email } }));
-    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(authMock, credentials.email, credentials.password);
+    expect(response).toEqual({ operationType: 'signIn', user: { email: credentials.email } });
+    expect(signInWithEmailAndPassword).toHaveBeenCalledTimes(1);
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith({}, credentials.email, credentials.password);
+    (signInWithEmailAndPassword as jest.Mock).mockClear(); // Clear the mock so the next test starts with fresh data
   });
 
   it('should fail user login with email and password', async () => {
-    const credentials = { email: 'luismanuelp1992@gmail.com', password: 'Abcd1234' };
-    const response = await service.singIn(credentials);
-    expect(JSON.stringify(response)).toContain('Error');
-    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(authMock, credentials.email, credentials.password);
+    const credentials = { email: 'test@test.com', password: 'Abcd1234' };
+    const mockError = new Error('Incorrect credentials.', { cause: `Error 400` });
+    jest.mocked(signInWithEmailAndPassword).mockRejectedValue({ code: 'auth/invalid-credential' });
+    try {
+      await service.singIn(credentials)
+    } catch (e) {
+      expect(e).toEqual(mockError);
+    }
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith({}, credentials.email, credentials.password);
+    (signInWithEmailAndPassword as jest.Mock).mockClear();
   });
 });

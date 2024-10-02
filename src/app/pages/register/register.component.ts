@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -10,8 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { RegisterService } from './register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
-import { Auth, authState, User } from '@angular/fire/auth';
-import { Subscription } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -22,11 +20,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent {
   private _snackBar = inject(MatSnackBar);
-  private auth: Auth = inject(Auth);
-  authState$ = authState(this.auth);
-  authStateSubscription: Subscription;
 
   hide = signal(true);
   confirmHide = signal(true);
@@ -35,12 +30,8 @@ export class RegisterComponent implements OnDestroy {
   isLoading = signal(false);
 
   constructor(private registerService: RegisterService, private router: Router) {
-    this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {
-      //handle auth state changes here. Note, that user will be null if there is no currently logged in user.
-      console.log(aUser);
-    })
     this.registerForm = new FormGroup({
-      username: new FormControl('', {
+      email: new FormControl('', {
         updateOn: 'change',
         validators: [Validators.required, Validators.email]
       }),
@@ -68,7 +59,7 @@ export class RegisterComponent implements OnDestroy {
     if (this.isLoading() === false && this.registerForm.valid) {
       this.isLoading.set(true);
       try {
-        const user = await this.registerService.singUp({ email: this.f['username'].value, password: this.f['password'].value });
+        const user = await this.registerService.singUp({ email: this.f['email'].value, password: this.f['password'].value });
         console.log(user);
         this._snackBar.open('User created', 'Close', { duration: environment.snackBarDuration });
         this.router.navigate(['login']);
@@ -101,11 +92,6 @@ export class RegisterComponent implements OnDestroy {
     }
     return passNotMatch === true ? { passwordNoMatch: true } : null;
   };
-
-  ngOnDestroy() {
-    // when manually subscribing to an observable remember to unsubscribe in ngOnDestroy
-    this.authStateSubscription.unsubscribe();
-  }
 
 }
 

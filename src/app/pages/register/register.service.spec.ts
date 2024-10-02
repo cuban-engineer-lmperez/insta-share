@@ -56,8 +56,22 @@ describe('RegisterService', () => {
   it('should successful register an user with email and password', async () => {
     const credentials = { email: 'luismanuelp1992@gmail.com', password: 'Abcd1234*' };
     const response = await service.singUp(credentials);
-    expect(JSON.stringify(response)).toEqual(JSON.stringify({ operationType: 'signIn', user: { email: credentials.email } }));
+    expect(response).toEqual({ operationType: 'signIn', user: { email: credentials.email } });
     expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(authMock, credentials.email, credentials.password);
+    (createUserWithEmailAndPassword as jest.Mock).mockClear();
+  });
+
+  it('should fail user sing up with email and password', async () => {
+    const credentials = { email: 'test@test.com', password: 'Abcd1234' };
+    const mockError = new Error('Email already exists.', { cause: `Error 400` });
+    jest.mocked(createUserWithEmailAndPassword).mockRejectedValue({ code: 'auth/email-already-in-use' });
+    try {
+      await service.singUp(credentials)
+    } catch (e) {
+      expect(e).toEqual(mockError);
+    }
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith({}, credentials.email, credentials.password);
+    (createUserWithEmailAndPassword as jest.Mock).mockClear();
   });
 
 });

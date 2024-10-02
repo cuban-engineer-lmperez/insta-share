@@ -11,13 +11,13 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="username" type="email" />
-                @if (f['username'].invalid && (f['username'].dirty || f['username'].touched)) {
+                <input matInput formControlName="email" type="email" />
+                @if (f['email'].invalid && (f['email'].dirty || f['email'].touched)) {
                 <mat-error>
-                    @if (f['username'].hasError('required')) {
+                    @if (f['email'].hasError('required')) {
                     <span>Email is required.</span>
                     }
-                    @else if (f['username'].hasError('email')) {
+                    @else if (f['email'].hasError('email')) {
                     <span>Email must be an valid.</span>
                     }
                 </mat-error>
