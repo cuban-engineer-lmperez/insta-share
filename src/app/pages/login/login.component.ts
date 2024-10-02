@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   incorrectCredentials = signal(false);
 
-  constructor() {
+  constructor(private loginService: LoginService) {
     this.loginForm = new FormGroup({
       username: new FormControl('', {
         updateOn: 'change',
@@ -49,7 +50,7 @@ export class LoginComponent {
   async singIn() {
     if (this.loginForm.valid) {
       try {
-       // await this.loginForm.singUp({ email: this.f['username'].value, password: this.f['password'].value });
+       await this.loginService.singIn({ email: this.f['username'].value, password: this.f['password'].value });
       } catch (e) {
         const wrapError = e as { message: string };
         this._snackBar.open(wrapError?.message, 'Close', { duration: environment.snackBarDuration });

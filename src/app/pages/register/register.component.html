@@ -11,7 +11,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="username" />
+                <input matInput formControlName="username" type="email"/>
                 @if (f['username'].invalid && (f['username'].dirty || f['username'].touched)) {
                 <mat-error>
                     @if (f['username'].hasError('required')) {
@@ -26,7 +26,7 @@
 
             <mat-form-field appearance="outline" class="ng-invalid">
                 <mat-label>Enter your password</mat-label>
-                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" class="ng-invalid">
+                <input matInput type="password" [type]="hide() ? 'password' : 'text'" formControlName="password" class="ng-invalid">
                 <button mat-icon-button matSuffix (click)="hide.set(!hide())" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide()">
                     <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -44,7 +44,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label> Confirm your password </mat-label>
-                <input matInput [type]="confirmHide() ? 'password' : 'text'" formControlName="confirmPassword">
+                <input matInput type="password" [type]="confirmHide() ? 'password' : 'text'" formControlName="confirmPassword">
                 <button mat-icon-button matSuffix (click)="confirmHide.set(!confirmHide())"
                     [attr.aria-label]="'Hide password'" [attr.aria-pressed]="confirmHide()">
                     <mat-icon>{{confirmHide() ? 'visibility_off' : 'visibility'}}</mat-icon>
