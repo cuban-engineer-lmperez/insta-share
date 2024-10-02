@@ -55,6 +55,13 @@
   
       button {
         width: 100%;
+        &.with-icon {
+          display: flex;
+          flex-direction: row-reverse;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+        }
       }
     }
   

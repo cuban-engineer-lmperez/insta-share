@@ -10,12 +10,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
 import { LoginService } from './login.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule,
-    MatButtonModule, RouterModule, MatIconModule],
+    MatButtonModule, RouterModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -24,7 +25,7 @@ export class LoginComponent {
 
   hide = signal(true);
   loginForm: FormGroup;
-  incorrectCredentials = signal(false);
+  isLoading = signal(false);
 
   constructor(private loginService: LoginService) {
     this.loginForm = new FormGroup({
@@ -48,13 +49,15 @@ export class LoginComponent {
    * Login a user with email & password
    */
   async singIn() {
-    if (this.loginForm.valid) {
+    if (this.isLoading() === false && this.loginForm.valid) {
+      this.isLoading.set(true);
       try {
-       await this.loginService.singIn({ email: this.f['username'].value, password: this.f['password'].value });
+        await this.loginService.singIn({ email: this.f['username'].value, password: this.f['password'].value });
       } catch (e) {
         const wrapError = e as { message: string };
         this._snackBar.open(wrapError?.message, 'Close', { duration: environment.snackBarDuration });
       }
     }
+    this.isLoading.set(false);
   }
 }

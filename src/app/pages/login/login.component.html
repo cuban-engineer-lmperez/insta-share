@@ -44,13 +44,10 @@
             <div class="align-content-end">
                 <a [routerLink]="[ '/forgot-password' ]" class="link">Forgot password? </a>
             </div>
-            @if (!!incorrectCredentials()) {
-            <p class="error">Sus credenciales son incorrectas.</p>
-            }
             <div class="buttons">
-                <button id="registerButton" [disabled]="loginForm.invalid" mat-flat-button color="primary"
-                    (click)="singIn()">
-                    Sing In
+                <button id="registerButton" [disabled]="loginForm.invalid || isLoading() === true" mat-flat-button color="primary"
+                    (click)="singIn()" class="with-icon">
+                    Sing In  <mat-icon [ngClass]="{'hide':isLoading() === false}"><mat-spinner diameter="18"> </mat-spinner></mat-icon>
                 </button>
             </div>
             <div class="bottom-items">
