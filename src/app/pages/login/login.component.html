@@ -1,1 +1,64 @@
-<p>login works!</p>
+<section class="container-row-login">
+    <div class="card-content mat-elevation-z8">
+        <div class="center-banner">
+            <img width="150"
+                src="https://firebasestorage.googleapis.com/v0/b/insta-share-1c720.appspot.com/o/logo-ce.png?alt=media&token=8d10a091-438c-4b55-a8af-08d44e6cc937"
+                alt="CE Banner" />
+            <h2 class="title">Sing In</h2>
+            <h4>Welcome back!</h4>
+        </div>
+        <form [formGroup]="loginForm">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="username" />
+                @if (f['username'].invalid && (f['username'].dirty || f['username'].touched)) {
+                <mat-error>
+                    @if (f['username'].hasError('required')) {
+                    <span>Email is required.</span>
+                    }
+                    @else if (f['username'].hasError('email')) {
+                    <span>Email must be an valid.</span>
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="ng-invalid">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" class="ng-invalid">
+                <button mat-icon-button matSuffix (click)="hide.set(!hide())" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if (f['password'].invalid && (f['password'].dirty || f['password'].touched)) {
+                <mat-error>
+                    @if (f['password'].hasError('required')) {
+                    <span>Password is required.</span>
+                    }@else if (f['password'].hasError('minlength')) {
+                    Password should be at least 6 characters.
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+            <div class="align-content-end">
+                <a [routerLink]="[ '/forgot-password' ]" class="link">Forgot password? </a>
+            </div>
+            @if (!!incorrectCredentials()) {
+            <p class="error">Sus credenciales son incorrectas.</p>
+            }
+            <div class="buttons">
+                <button id="registerButton" [disabled]="loginForm.invalid" mat-flat-button color="primary"
+                    (click)="singIn()">
+                    Sing Ip
+                </button>
+            </div>
+            <div class="bottom-items">
+                Don't have an account? <a class="center" [routerLink]="[ '/register' ]" class="link"> Sing Up </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
