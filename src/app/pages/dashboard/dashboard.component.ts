@@ -6,12 +6,12 @@ import { Auth, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 import { MatMenu, MatMenuItem, MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { FilesManageentComponent } from './components/files-manageent/files-manageent.component';
+import { FilesManagementComponent } from './components/files-management/files-management.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, FilesManageentComponent],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, FilesManagementComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
