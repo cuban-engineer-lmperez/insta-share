@@ -21,5 +21,8 @@ describe('FilesManageentComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
+  it('should upload the file', () => {
+    jest.spyOn(component, 'uploadFile');    // Spy on the `uploadFile` method
+    expect(component.uploadFile).toHaveBeenCalled();
+  });
 });
