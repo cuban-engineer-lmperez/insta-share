@@ -1,12 +1,19 @@
 <mat-toolbar>
-    <img width="130"
+  <img width="130"
     src="https://firebasestorage.googleapis.com/v0/b/insta-share-1c720.appspot.com/o/logo-ce.png?alt=media&token=8d10a091-438c-4b55-a8af-08d44e6cc937"
     alt="CE Banner" />
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>notifications</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
+  <span class="actions-spacer"></span>
+  <button mat-icon-button aria-label="Notifications icon">
+    <mat-icon>notifications</mat-icon>
+  </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Profile icon" id="actions-menu" >
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" >
+    @if(loggedUser()) {
+    <button mat-menu-item> {{ loggedUser() }} </button>
+    }
+    <button mat-menu-item (click)="logout()" id="logoutButton"><mat-icon>logout</mat-icon>Logout</button>
+  </mat-menu>
+
+</mat-toolbar>

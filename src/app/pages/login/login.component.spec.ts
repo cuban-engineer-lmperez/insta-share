@@ -44,7 +44,7 @@ describe('LoginComponent', () => {
   });
 
   it('shoul fail email field validity', () => {
-    let email = component.loginForm.controls['email'];
+    const email = component.loginForm.controls['email'];
     expect(email.valid).toBeFalsy();
     let errors = email.errors || {};
     expect(errors['required']).toBeTruthy();
