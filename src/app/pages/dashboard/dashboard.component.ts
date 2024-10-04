@@ -1,20 +1,24 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Auth, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { FilesManageentComponent } from './components/files-manageent/files-manageent.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, FilesManageentComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnDestroy {
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger | undefined;
+  @ViewChild(MatMenu) menu: MatMenu | undefined;
+  @ViewChildren(MatMenuItem) itemInstances: QueryList<MatMenuItem> | undefined;
   private auth: Auth = inject(Auth);
   user$ = user(this.auth);
   userSubscription: Subscription;
