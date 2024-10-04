@@ -1,1 +1,24 @@
-<p>files-manageent works!</p>
+<input type="file" class="file-input hide" [accept]="requiredFileType" (change)="onFileSelected($event)" #fileUpload>
+
+<div class="file-upload">
+    <button mat-button color="primary" class="attach-btn" (click)="fileUpload.click()"
+        [disabled]="uploadProgress() > -1">
+        {{fileName() || "No file attached yet."}} <mat-icon>attach_file</mat-icon>
+    </button>
+    <button mat-button color="accent" class="upload-btn" (click)="uploadFile()"
+        [disabled]="fileName() === '' || uploadProgress() > -1">
+        Upload <mat-icon>cloud_upload</mat-icon>
+    </button>
+</div>
+
+@if(uploadProgress() > -1) {
+<div class="progress">
+    <mat-progress-bar class="progress-bar" mode="determinate" [value]="uploadProgress()">
+    </mat-progress-bar>
+    <div class="progress-btn-row">
+        <button mat-button color="error" class="cancel-upload" (click)="cancelUpload()" [disabled]="fileName() === ''">
+            Cancel <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+</div>
+}
