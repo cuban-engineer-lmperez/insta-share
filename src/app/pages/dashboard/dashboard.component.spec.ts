@@ -25,7 +25,6 @@ const matMenuTriggerMock = {
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
-  let authMock: jest.Mocked<Auth>;
   let overlayContainerElement: HTMLElement;
   beforeEach(async () => {
     (user as jest.Mock).mockReturnValue(of(null)); // Mock the user observable to return null
@@ -51,7 +50,7 @@ describe('DashboardComponent', () => {
     component?.trigger?.openMenu(); // Open the menu
     fixture.detectChanges();
     tick(500);
-    const menuItem = <HTMLElement>overlayContainerElement.querySelector('#logoutButton');
+    const menuItem = <HTMLElement>overlayContainerElement.querySelector('#logoutButton'); // eslint-disable-line
     expect(menuItem).not.toBeNull();
     menuItem.click();   // Find the menu item and click it
     fixture.detectChanges();

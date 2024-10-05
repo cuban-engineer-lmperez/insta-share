@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Auth, User, user } from '@angular/fire/auth';
 import { ref, Storage, uploadBytesResumable, UploadTask } from '@angular/fire/storage';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,7 +34,7 @@ export class FilesManagementComponent {
   fileName = signal('');
   uploadTaskRef: UploadTask | undefined;
   displayedColumns: string[] = ['filename', 'status'];
-  dataSource = signal<{ filename: any }[]>([]);
+  dataSource = signal<{ filename: string }[]>([]);
 
   constructor(private router: Router, private filesManagementService: FilesManagementService) {
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
