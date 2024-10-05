@@ -10,6 +10,7 @@ export const environment = {
     },
     snackBarDuration: 5000,
     collections: {
-        users: 'users'
+        users: 'users',
+        files: (userId: string): string => `users-files/${userId}/files`
     }
 };
