@@ -11,10 +11,10 @@ export class FilesManagementService {
    * Create a new file entry on DB
    * @param fileDoc contains the file metadata to be created
    */
-  async createFile(fileDoc: { userId: string, filename: string, storageRef: string }) {
+  async createFile(fileDoc: { userId: string, filename: string, storage: string }) {
     const path: string = environment.collections.files(fileDoc.userId);
     const filesCollection = collection(this.firestore, path);
-    const createdFile = await addDoc(filesCollection, { ...fileDoc, status: FileStatus.Pending, storage: fileDoc.storageRef })
+    const createdFile = await addDoc(filesCollection, { ...fileDoc, status: FileStatus.Pending })
     return createdFile.id;
   }
 

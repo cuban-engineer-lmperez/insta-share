@@ -62,14 +62,17 @@ export class FilesManagementComponent {
       this.uploadProgress.set(0);
       const storageRef = ref(this.storage, `uploads/${userId}/${this.fileName()}`);
       const createdFileId = await this.filesManagementService
-        .createFile({ filename: this.fileName(), userId: userId, storageRef: storageRef.fullPath });
+        .createFile({ filename: this.fileName(), userId: userId, storage: storageRef.fullPath });
       await this.initLoadDatastore()
       this.uploadTaskRef = uploadBytesResumable(storageRef, this.file);
       this.uploadTaskRef.on('state_changed',
         (snapshot) => {
           this.uploadProgress.set(Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100));           //Calculate and set the upload progress
         },
-        (error) => { console.log(error); this.initLoadDatastore() },
+        (error) => {
+          console.log(error); this.filesManagementService.updateFile({ userId: userId, fileId: createdFileId, status: FileStatus.Failed })
+            .then(() => this.initLoadDatastore())
+        },
         async () => {           //Upload is complete
           this.filesManagementService.updateFile({ userId: userId, fileId: createdFileId, status: FileStatus.Completed })
             .then(() => this.initLoadDatastore())
