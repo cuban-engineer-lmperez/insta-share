@@ -54,7 +54,7 @@ export class FilesManagementComponent {
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files) {
+    if (input?.files) {
       this.file = input.files[0];
       this.fileName.set(this.file.name);
     }
