@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { Auth, User, user } from '@angular/fire/auth';
 import { ref, Storage, uploadBytesResumable, UploadTask } from '@angular/fire/storage';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,9 @@ import { environment } from '../../../../../environments/environment';
 import { FilesManagementService } from './files-management.service';
 import { MatTableModule } from '@angular/material/table';
 import { FileStatus } from './file-status.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { EditFileComponent } from './components/edit-file/edit-file.component';
+
 
 @Component({
   selector: 'app-files-manageent',
@@ -33,8 +36,12 @@ export class FilesManagementComponent {
   uploadProgress = signal(-1);
   fileName = signal('');
   uploadTaskRef: UploadTask | undefined;
-  displayedColumns: string[] = ['filename', 'status'];
+  displayedColumns: string[] = ['filename', 'status', 'actions'];
   dataSource = signal<{ filename: string }[]>([]);
+  // Dialog Data
+  readonly animal = signal('');
+  readonly name = model('');
+  readonly dialog = inject(MatDialog);
 
   constructor(private router: Router, private filesManagementService: FilesManagementService) {
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
@@ -100,5 +107,18 @@ export class FilesManagementComponent {
     const docs = await this.filesManagementService.getFiles(this.loggedUser?.uid);
     const data = docs?.docs.map(x => x.data()).map(f => { return { filename: f['filename'], status: f['status'] } });
     this.dataSource.set(data || []);
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(EditFileComponent, {
+      data: { name: this.name(), animal: this.animal() },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.animal.set(result);
+      }
+    });
   }
 }

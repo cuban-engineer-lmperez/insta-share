@@ -5,6 +5,8 @@ import { of } from 'rxjs';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Firestore } from '@angular/fire/firestore';
+import { Storage } from '@angular/fire/storage';
 
 jest.mock('@angular/fire/auth', () => {
   return {
@@ -18,6 +20,23 @@ jest.mock('@angular/fire/auth', () => {
   };
 });
 
+jest.mock('@angular/fire/firestore', () => {
+  return {
+    Firestore: jest.fn(), // Mock the Auth class
+    addDoc: jest.fn(), // Mock the addDoc function
+    collection: jest.fn(), // Mock the collection function
+  };
+});
+
+jest.mock('@angular/fire/storage', () => {
+  return {
+    Storage: jest.fn(), // Mock the Storage class
+    ref: jest.fn(), // Mock the ref function
+    uploadBytesResumable: jest.fn(), // Mock the uploadBytesResumable function
+    UploadTask: jest.fn(), // Mock the UploadTask function
+  };
+});
+
 const matMenuTriggerMock = {
   openMenu: jest.fn(),
 };
@@ -26,11 +45,13 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let overlayContainerElement: HTMLElement;
+  let storageMock: jest.Mocked<Storage>;
+
   beforeEach(async () => {
     (user as jest.Mock).mockReturnValue(of(null)); // Mock the user observable to return null
     await TestBed.configureTestingModule({
       imports: [DashboardComponent, NoopAnimationsModule, MatMenuModule],
-      providers: [{ provide: Auth, useValue: {} }, { provide: MatMenuTrigger, useValue: matMenuTriggerMock }]
+      providers: [{ provide: Auth, useValue: {} }, { provide: Firestore, useValue: {} }, { provide: Storage, useValue: {} }, { provide: MatMenuTrigger, useValue: matMenuTriggerMock }]
     })
       .compileComponents();
     fixture = TestBed.createComponent(DashboardComponent);
@@ -38,6 +59,7 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
     window.scroll(0, 0);
     overlayContainerElement = TestBed.inject(OverlayContainer).getContainerElement();
+    storageMock = TestBed.inject(Storage) as jest.Mocked<Storage>;
   });
 
   it('should create', () => {

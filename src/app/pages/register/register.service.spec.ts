@@ -52,7 +52,7 @@ describe('RegisterService', () => {
       providers: [
         RegisterService,
         { provide: Auth, useValue: {} }, // Provide an empty object as a mock Auth instance
-        { provide: Firestore, useValue: {} }, // Provide an empty object as a mock Auth instance
+        { provide: Firestore, useValue: {} }, // Provide an empty object as a mock Firestore instance
       ],
     });
     service = TestBed.inject(RegisterService);
