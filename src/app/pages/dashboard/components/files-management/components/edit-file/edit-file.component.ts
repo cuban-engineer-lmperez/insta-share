@@ -30,9 +30,14 @@ import { DialogData } from './interfaces/edit-file.interface';
 export class EditFileComponent {
   readonly dialogRef = inject(MatDialogRef<EditFileComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  readonly animal = model(this.data.animal);
+  readonly filename = model<DialogData>(this.data);
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  save(): void {
+    this.dialogRef.close(); // { id: this.data.id, filename: this.filename() }
+  }
+
 }

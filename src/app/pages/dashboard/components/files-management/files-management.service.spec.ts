@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { FilesManagementService } from './files-management.service';
 import { Firestore, addDoc, getDocs, updateDoc, doc, collection, query } from '@angular/fire/firestore';
-import { ref, Storage, uploadBytesResumable, UploadTask } from '@angular/fire/storage';
+import { Storage } from '@angular/fire/storage';
 
 jest.mock('@angular/fire/firestore', () => {
   return {
@@ -38,7 +38,7 @@ describe('FilesManagementService', () => {
     TestBed.configureTestingModule({
       providers: [
         FilesManagementService,
-        { provide: Firestore, useValue: {} }, { provide: Storage, useValue: {} },
+        { provide: Firestore, useValue: firestoreMock }, { provide: Storage, useValue: {} },
       ],
     });
     service = TestBed.inject(FilesManagementService);

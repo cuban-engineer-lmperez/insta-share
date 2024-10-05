@@ -51,7 +51,7 @@ describe('DashboardComponent', () => {
     (user as jest.Mock).mockReturnValue(of(null)); // Mock the user observable to return null
     await TestBed.configureTestingModule({
       imports: [DashboardComponent, NoopAnimationsModule, MatMenuModule],
-      providers: [{ provide: Auth, useValue: {} }, { provide: Firestore, useValue: {} }, { provide: Storage, useValue: {} }, { provide: MatMenuTrigger, useValue: matMenuTriggerMock }]
+      providers: [{ provide: Auth, useValue: {} }, { provide: Firestore, useValue: {} }, { provide: Storage, useValue: storageMock }, { provide: MatMenuTrigger, useValue: matMenuTriggerMock }]
     })
       .compileComponents();
     fixture = TestBed.createComponent(DashboardComponent);
