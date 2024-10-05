@@ -39,7 +39,7 @@ export class FilesManagementService {
   async updateFile(fileDoc: { userId: string, fileId: string, filename?: string, status?: FileStatus }) {
     const path: string = environment.collections.files(fileDoc.userId);
     const fileDocRed = doc(this.firestore, `${path}/${fileDoc.fileId}`);
-    const preparedDoc: { [key: string]: any; } = {};
+    const preparedDoc: Record<string, string> = {};
     if (fileDoc.status) preparedDoc['status'] = fileDoc.status;
     if (fileDoc.filename) preparedDoc['filename'] = fileDoc.filename;
     if(Object.keys(preparedDoc).length > 0) {

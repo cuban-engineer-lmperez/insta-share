@@ -5,23 +5,22 @@
         [disabled]="uploadProgress() > -1">
         {{fileName() || "No file attached yet."}} <mat-icon>attach_file</mat-icon>
     </button>
-    <button mat-button color="accent" class="upload-btn" (click)="uploadFile()"
+    <button mat-button color="accent" class="upload-btn" (click)="uploadFile()" id="fileUpload"
         [disabled]="fileName() === '' || uploadProgress() > -1">
         Upload <mat-icon>cloud_upload</mat-icon>
     </button>
+    @if(uploadProgress() > -1) {
+    <button mat-button color="error" class="cancel-upload" (click)="cancelUpload()" [disabled]="fileName() === ''" id="cancelUpload">
+        Cancel <mat-icon>cancel</mat-icon>
+    </button>
+    }
 </div>
 
-@if(uploadProgress() > -1) {
-<div class="progress">
+
+<div class="progress {{(uploadProgress() < 0) ? 'invisible': ''}}">
     <mat-progress-bar class="progress-bar" mode="determinate" [value]="uploadProgress()">
     </mat-progress-bar>
-    <div class="progress-btn-row">
-        <button mat-button color="error" class="cancel-upload" (click)="cancelUpload()" [disabled]="fileName() === ''">
-            Cancel <mat-icon>cancel</mat-icon>
-        </button>
-    </div>
 </div>
-}
 
 @if(dataSource().length > 0) {
 <section class="table-files">
@@ -35,11 +34,21 @@
             <th mat-header-cell *matHeaderCellDef> Name </th>
             <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
         </ng-container>
-        
+
         <!-- Symbol Column -->
         <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> Status </th>
-            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            <th mat-header-cell *matHeaderCellDef class="center"> Status </th>
+            <td mat-cell *matCellDef="let element" class="center"> <span
+                    class="chip-state chip-{{element.status}}">{{element.status}}</span> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button aria-label="Edit file metadata" (click)="openDialog(element.id)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

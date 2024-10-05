@@ -11,6 +11,7 @@ const config: Config = {
           statements: 85,
         },
       },
+      modulePathIgnorePatterns: ["<rootDir>/src/environments/"]
 };
 
 export default config;

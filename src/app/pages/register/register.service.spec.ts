@@ -35,7 +35,6 @@ jest.mock('@angular/fire/firestore', () => {
 describe('RegisterService', () => {
   let service: RegisterService;
   let authMock: jest.Mocked<Auth>;
-  let firestoreMock: jest.Mocked<Firestore>;
   beforeEach(() => {
     // Mock implementations for the AngularFire functions
     (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({ operationType: 'signIn', user: { email: 'luismanuelp1992@gmail.com' } } as UserCredential); // Mock the return value
@@ -53,12 +52,11 @@ describe('RegisterService', () => {
       providers: [
         RegisterService,
         { provide: Auth, useValue: {} }, // Provide an empty object as a mock Auth instance
-        { provide: Firestore, useValue: {} }, // Provide an empty object as a mock Auth instance
+        { provide: Firestore, useValue: {} }, // Provide an empty object as a mock Firestore instance
       ],
     });
     service = TestBed.inject(RegisterService);
     authMock = TestBed.inject(Auth) as jest.Mocked<Auth>;
-    firestoreMock = TestBed.inject(Firestore) as jest.Mocked<Firestore>;
   });
 
   it('should be created', () => {

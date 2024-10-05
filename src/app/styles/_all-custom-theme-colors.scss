@@ -1,6 +1,8 @@
 // CUSTOM COMPONENTS
 @use "./global";
+@use "./../pages/dashboard/components/files-management/files-management.component.theme.scss" as fm;
 
 @mixin all-custom-component-theme-colors($theme) {
   @include global.theme($theme);
+  @include fm.theme($theme);
 }

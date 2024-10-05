@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { Auth, User, user } from '@angular/fire/auth';
 import { ref, Storage, uploadBytesResumable, UploadTask } from '@angular/fire/storage';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,9 @@ import { environment } from '../../../../../environments/environment';
 import { FilesManagementService } from './files-management.service';
 import { MatTableModule } from '@angular/material/table';
 import { FileStatus } from './file-status.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { EditFileComponent } from './components/edit-file/edit-file.component';
+
 
 @Component({
   selector: 'app-files-manageent',
@@ -33,8 +36,12 @@ export class FilesManagementComponent {
   uploadProgress = signal(-1);
   fileName = signal('');
   uploadTaskRef: UploadTask | undefined;
-  displayedColumns: string[] = ['filename', 'status'];
-  dataSource = signal<{ filename: any }[]>([]);
+  displayedColumns: string[] = ['filename', 'status', 'actions'];
+  dataSource = signal<{ filename: string, id: string }[]>([]);
+  // Dialog Data
+  readonly animal = signal('');
+  readonly name = model('');
+  readonly dialog = inject(MatDialog);
 
   constructor(private router: Router, private filesManagementService: FilesManagementService) {
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
@@ -47,7 +54,7 @@ export class FilesManagementComponent {
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files) {
+    if (input?.files) {
       this.file = input.files[0];
       this.fileName.set(this.file.name);
     }
@@ -98,7 +105,32 @@ export class FilesManagementComponent {
 
   async initLoadDatastore() {
     const docs = await this.filesManagementService.getFiles(this.loggedUser?.uid);
-    const data = docs?.docs.map(x => x.data()).map(f => { return { filename: f['filename'], status: f['status'] } });
+    const data = docs?.docs.map(x => { return { ...x.data(), id: x.id } }).map((f: Record<string, string>) => { return { filename: f['filename'], status: f['status'], id: f['id'] } });
     this.dataSource.set(data || []);
+  }
+
+  openDialog(fileId: string): void {
+    const file = this.dataSource().find(file => file.id === fileId);
+    const dialogRef = this.dialog.open(EditFileComponent, {
+      data: file,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        console.log(result);
+        if(this.loggedUser.uid) {
+          this.filesManagementService.updateFile({
+            filename: result.filename,
+            userId: this.loggedUser!.uid,
+            fileId: file!.id
+          })
+        }else {
+          console.error('There are logged user');
+        }
+        this._snackBar.open('Filed updated.', 'Close', { duration: environment.snackBarDuration });
+        this.initLoadDatastore()
+      }
+    });
   }
 }
