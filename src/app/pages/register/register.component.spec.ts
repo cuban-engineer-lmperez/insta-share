@@ -3,13 +3,18 @@ import { RegisterComponent } from './register.component';
 import { provideRouter } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RegisterService } from './register.service';
-import {
-  Auth
-} from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
+import { Firestore } from '@angular/fire/firestore';
 
 jest.mock('@angular/fire/auth', () => {
   return {
     Auth: jest.fn(), // Mock the Auth class
+  };
+});
+
+jest.mock('@angular/fire/firestore', () => {
+  return {
+    Firestore: jest.fn(), // Mock the Auth class
   };
 });
 
@@ -21,7 +26,7 @@ describe('RegisterComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
       providers: [
-        provideRouter([]), RegisterService, { provide: Auth, useValue: {} }, // Provide an empty object as a mock Auth instance
+        provideRouter([]), RegisterService, { provide: Auth, useValue: {} }, { provide: Firestore, useValue: {} }
       ],
     })
       .compileComponents();
@@ -44,7 +49,7 @@ describe('RegisterComponent', () => {
   });
 
   it('shoul fail email field validity', () => {
-    let email = component.registerForm.controls['email'];
+    const email = component.registerForm.controls['email'];
     expect(email.valid).toBeFalsy();
     let errors = email.errors || {};
     expect(errors['required']).toBeTruthy();
