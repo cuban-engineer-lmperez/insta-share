@@ -11,7 +11,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email"/>
+                <input matInput formControlName="email" type="email" />
                 @if (f['email'].invalid && (f['email'].dirty || f['email'].touched)) {
                 <mat-error>
                     @if (f['email'].hasError('required')) {

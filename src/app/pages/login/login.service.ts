@@ -32,7 +32,7 @@ export class LoginService {
           errorMessage = 'Incorrect credentials.'
           break;
       }
-      throw Error(errorMessage, { cause: `Error ${JSON.stringify(firebaseError)}` });
+      throw Error(errorMessage, { cause: `Error ${errorCode}: ${JSON.stringify(firebaseError)}` });
     };
   }
 
