@@ -26,6 +26,20 @@
     }
 }
 
+.invisible {
+    opacity: 0;
+}
+
 .table-files {
     margin: .5rem;
+    .chip-state {
+        color: white;
+        padding: .2rem .8rem;
+        border-radius: 1rem;
+    }
+    th.center, td.center {
+        text-align: center;
+        justify-content: center;
+        justify-items: center;
+    }
 }

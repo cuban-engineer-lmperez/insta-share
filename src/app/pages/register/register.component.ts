@@ -59,7 +59,7 @@ export class RegisterComponent {
     if (this.isLoading() === false && this.registerForm.valid) {
       this.isLoading.set(true);
       try {
-        const user = await this.registerService.singUp({ email: this.f['email'].value, password: this.f['password'].value });
+        await this.registerService.singUp({ email: this.f['email'].value, password: this.f['password'].value });
         this._snackBar.open('User created', 'Close', { duration: environment.snackBarDuration });
         this.router.navigate(['login']);
       } catch (e) {
